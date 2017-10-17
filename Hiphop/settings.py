@@ -23,9 +23,9 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = 'p4ravpum0k4!d81s#_@r)5)x9e#vxowb=a9v6&k(4w=spz-3st'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = ['hiphop.6-79.cn']
 
 
 # Application definition

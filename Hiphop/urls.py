@@ -26,5 +26,3 @@ urlpatterns = [
     url(r'^match', match_phrase),
 ]
 
-urlpatterns += static.static('/', document_root=STATIC_DIR_URL)
-

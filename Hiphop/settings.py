@@ -123,10 +123,12 @@ USE_TZ = False
 # https://docs.djangoproject.com/en/1.11/howto/static-files/
 
 STATIC_URL = '/static/'
-STATIC_DIR_URL = os.path.join(BASE_DIR, "files")
+STATIC_FILE = os.path.join(BASE_DIR, "files")
+# STATIC_ROOT = os.path.join(BASE_DIR, 'static_files')
 STATICFILES_DIRS = (
-    STATIC_DIR_URL,
+    os.path.join(BASE_DIR, "files"),
 )
+# ICO_URL = os.path.join(STATIC_URL, 'favicon.ico')
 STATICFILES_FINDERS = (
     "django.contrib.staticfiles.finders.FileSystemFinder",
     "django.contrib.staticfiles.finders.AppDirectoriesFinder"

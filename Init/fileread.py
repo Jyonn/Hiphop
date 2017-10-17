@@ -65,11 +65,6 @@ for s in open(os.path.join(CRT_PATH, 'cluster'), 'r+'):
             clusters[cluster_name].append(group_list)
 
 
-# print(dictionary)
-# print(words)
-# print(groups)
-# print(clusters)
-
 def match(o_phrase, cluster=clusters['NORMAL'], min_max_match=0, phrase_len=0):
     """
     词语匹配

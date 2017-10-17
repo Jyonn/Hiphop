@@ -13,10 +13,11 @@ Including another URLconf
     1. Import the include() function: from django.conf.urls import url, include
     2. Add a URL to urlpatterns:  url(r'^blog/', include('blog.urls'))
 """
-from django.conf.urls import url
+from django.conf.urls import url, static
 from django.contrib import admin
 
 from Hiphop.front_views import index
+from Hiphop.settings import STATIC_FILE
 from Hiphop.views import match_phrase
 
 urlpatterns = [
@@ -24,3 +25,6 @@ urlpatterns = [
     url(r'^$', index),
     url(r'^match', match_phrase),
 ]
+
+urlpatterns += static.static('/', document_root=STATIC_FILE)
+

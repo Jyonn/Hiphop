@@ -17,7 +17,7 @@ from django.conf.urls import url, static
 from django.contrib import admin
 
 from Hiphop.front_views import index
-from Hiphop.settings import STATIC_FILE
+from Hiphop.settings import STATIC_DIR_URL
 from Hiphop.views import match_phrase
 
 urlpatterns = [
@@ -26,5 +26,5 @@ urlpatterns = [
     url(r'^match', match_phrase),
 ]
 
-urlpatterns += static.static('/', document_root=STATIC_FILE)
+urlpatterns += static.static('/', document_root=STATIC_DIR_URL)
 

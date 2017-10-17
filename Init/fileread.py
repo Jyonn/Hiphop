@@ -1,6 +1,7 @@
 import re
 
 import os
+import codecs
 
 from Base.error import Error
 from Base.response import Ret
@@ -13,7 +14,7 @@ groups = dict()
 clusters = dict()
 CRT_PATH = os.path.join(BASE_DIR, 'Init')
 
-for s in open(os.path.join(CRT_PATH, 'word'), 'r+'):
+for s in codecs.open(os.path.join(CRT_PATH, 'word'), 'r+', encoding='utf8'):
     if s[-1] == '\n':
         s = s[:-1]
     p, ws = re.split('\d+', s, 1)
@@ -33,7 +34,7 @@ for s in open(os.path.join(CRT_PATH, 'word'), 'r+'):
             t=tune,
         ))
 
-for s in open(os.path.join(CRT_PATH, 'phrase'), 'r+'):
+for s in codecs.open(os.path.join(CRT_PATH, 'phrase'), 'r+', encoding='utf8'):
     if s[-1] == '\n':
         s = s[:-1]
     phrases.append(s)
@@ -48,7 +49,7 @@ for s in open(os.path.join(CRT_PATH, 'group'), 'r+'):
 
 cluster_free = True
 cluster_name = ''
-for s in open(os.path.join(CRT_PATH, 'cluster'), 'r+'):
+for s in codecs.open(os.path.join(CRT_PATH, 'cluster'), 'r+', encoding='utf8'):
     if s[-1] == '\n':
         s = s[:-1]
     if cluster_free:

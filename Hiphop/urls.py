@@ -16,9 +16,11 @@ Including another URLconf
 from django.conf.urls import url
 from django.contrib import admin
 
+from Hiphop.front_views import index
 from Hiphop.views import match_phrase
 
 urlpatterns = [
     # url(r'^admin/', admin.site.urls),
+    url(r'^$', index),
     url(r'^match', match_phrase),
 ]

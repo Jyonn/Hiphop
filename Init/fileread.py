@@ -115,7 +115,7 @@ def match(o_phrase, cluster=clusters['NORMAL'], min_max_match=0, phrase_len=0):
                 max_match += 1
             else:  # 当前字无法匹配，匹配终止
                 break
-        if min_max_match > max_match:
+        if min_max_match > max_match or max_match < 1:
             continue
 
         max_match = str(max_match)

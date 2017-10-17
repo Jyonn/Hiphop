@@ -1,0 +1,47 @@
+body {
+    background: #8ccef5;
+}
+
+h1 {
+    color: #ffffff;
+    font-size: 44px;
+    letter-spacing: 10px;
+}
+
+h2 {
+    color: #ffffff;
+    font-size: 14px;
+    letter-spacing: 2px;
+}
+
+.container {
+    width: 100%;
+}
+
+#title {
+    margin-top: 100px;
+}
+
+.center {
+    text-align: center;
+}
+
+input {
+    width: 60%;
+    font-size: 18px;
+    padding: 5px;
+}
+
+button {
+    height: 35px;
+    padding: 0 20px;
+}
+
+#search {
+    margin-top: 40px;
+}
+
+.result-box {
+    padding: 0 20%;
+    text-align: justify;
+}

@@ -14,6 +14,16 @@ groups = dict()
 clusters = dict()
 CRT_PATH = os.path.join(BASE_DIR, 'Init')
 
+
+def get_cluster(string):
+    o_cluster = list()
+    cluster = string.split(';')
+    for c in cluster:
+        group_list = c.split(',')
+        o_cluster.append(group_list)
+    return o_cluster
+
+
 for s in codecs.open(os.path.join(CRT_PATH, 'word'), 'r+', encoding='utf8'):
     if s[-1] == '\n':
         s = s[:-1]
@@ -59,22 +69,27 @@ for s in codecs.open(os.path.join(CRT_PATH, 'cluster'), 'r+', encoding='utf8'):
             cluster_free = False
     else:
         cluster_free = True
-        clusters[cluster_name] = list()
-        cluster = s.split(';')
-        for c in cluster:
-            group_list = c.split(',')
-            clusters[cluster_name].append(group_list)
+        clusters[cluster_name] = get_cluster(s)
 
 
-def match(o_phrase, cluster=clusters['NORMAL'], min_max_match=0, phrase_len=0):
+def match(o_phrase, cluster, min_max_match, phrase_len, cluster_type):
     """
     词语匹配
+    :param cluster_type: cluster类型
     :param phrase_len: 匹配的词语长度 0 表示所有长度
     :param min_max_match: 最小匹配的最大长度 -1 表示所能达到的最大长度
     :param o_phrase: 拼音列表 如羽毛球 则 qiu2 mao2 yu3
     :param cluster: 使用聚类名称 默认为 NORMAL 还有
     :return: Ret类 如果成功则返回匹配词典
     """
+    if cluster_type == 'DEFAULT':
+        if cluster in clusters.keys():
+            cluster = clusters[cluster]
+        else:
+            cluster = clusters['NORMAL']
+    else:
+        cluster = get_cluster(cluster)
+
     result = dict()
     for phonetic in o_phrase:
         if phonetic['p'] not in groups.keys():

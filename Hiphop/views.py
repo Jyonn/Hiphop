@@ -3,7 +3,7 @@ from Base.response import response, error_response
 from Init.fileread import match
 
 
-@require_get_params(['phrase', 'phrase_len', 'min_max_match'])
+@require_get_params(['phrase', 'phrase_len', 'min_max_match', 'cluster', 'cluster_type'])
 def match_phrase(request):
     phrase = request.GET['phrase']
     try:
@@ -14,6 +14,10 @@ def match_phrase(request):
         min_max_match = int(request.GET['min_max_match'])
     except:
         min_max_match = 0
+    cluster_type = request.GET['cluster_type'].upper()
+    if cluster_type not in ['DEFAULT', 'CUSTOMIZE']:
+        cluster_type = 'DEFAULT'
+    cluster = request.GET['cluster'].upper()
 
     phonetics = phrase.split(' ')
     o_phrase = list()
@@ -27,7 +31,7 @@ def match_phrase(request):
         o_phrase.append(dict(t=t, p=p))
     o_phrase.reverse()
 
-    rtn = match(o_phrase, phrase_len=phrase_len, min_max_match=min_max_match)
+    rtn = match(o_phrase, phrase_len=phrase_len, min_max_match=min_max_match, cluster_type=cluster_type, cluster=cluster)
     if rtn.error is not Error.OK:
         return error_response(rtn.error, append_msg=rtn.body)
     return response(body=rtn.body)

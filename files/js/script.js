@@ -7,7 +7,7 @@ $(document).ready(function () {
         let input = $('input').val();
         if (!input)
             input = "xie4 chun1 hua1";
-        let url = `/match?phrase=${input}&min_max_match=0&phrase_len=0`;
+        let url = `/match?phrase=${input}&min_max_match=0&phrase_len=0&cluster=NORMAL&cluster_type=DEFAULT`;
 
         url = encodeURI(url);
         request(url, 'GET', null, function (response) {
@@ -20,7 +20,7 @@ $(document).ready(function () {
             for (let i = 10; i > 0; i--) {
                 if (!results[i])
                     continue;
-                let sub_title = translate[i] + '压';
+                let sub_title = translate[i] + '押';
                 let str = '';
                 for (let p = 0; p < results[i].length; p++)
                     str += results[i][p] + `&nbsp;`;

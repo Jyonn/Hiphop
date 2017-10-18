@@ -99,4 +99,4 @@
 
 对照GROUP表格可以得出，NORMAL模式把第6，7两组划为一个集群，也就是说**ben**和**beng**为同韵。CLUSTER的划分不是**组唯一**的，如第7组和第6组在一个CLUSTER，也和第16组（**beng**和**chong**同韵）在一个CLUSTER，但第6组和第16组并不同韵。
 
-在```GET /match```接口中，若cluster_type为```CUSTOMIZE```，用户可按如上格式自定义集群。
+在```GET /match```接口中，若cluster_type为```CUSTOMIZE```，用户可按如上格式自定义集群。（无需```[CLUSTER-xxx]```，只需第二行）。

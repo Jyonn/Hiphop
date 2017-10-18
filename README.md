@@ -14,13 +14,13 @@
 
 ```phrase``` 进行匹配的拼音串。拼音之间用空格隔开，拼音可以带声调也可以不带。
 
-```min_max_match``` 最小匹配长度。默认为0，表示单压、二压及以上所有押韵都返回。若为2，则只返回二压及以上匹配的词语。
+```min_max_match``` 最小匹配长度。默认为```0```，表示单压、二压及以上所有押韵都返回。若为```2```，则只返回二压及以上匹配的词语。
 
-```phrase_len``` 匹配的词语长度。默认为0，表示任意长度的词语都返回。若为2，则只返回双字词语。
+```phrase_len``` 匹配的词语长度。默认为```0```，表示任意长度的词语都返回。若为```2```，则只返回双字词语。
 
-```cluster``` 押韵集群。默认为NORMAL，还可以是STRICT或自定义集群。
+```cluster``` 押韵集群。默认为```NORMAL```，还可以是```STRICT```或自定义集群。
 
-```cluster_type``` 押韵集群类型。默认为DEFAULT，此时cluster选择系统自带的集群方案（NORMAL/STRICT）。如果是CUSTOMIZE，cluster的值为自定义集群方案。
+```cluster_type``` 押韵集群类型。默认为```DEFAULT```，此时cluster选择系统自带的集群方案（```NORMAL```/```STRICT```）。如果是```CUSTOMIZE```，cluster的值为自定义集群方案。
 
 *更多关于押韵集群参数的信息见末尾。*
 
@@ -99,4 +99,4 @@
 
 对照GROUP表格可以得出，NORMAL模式把第6，7两组划为一个集群，也就是说**ben**和**beng**为同韵。CLUSTER的划分不是**组唯一**的，如第7组和第6组在一个CLUSTER，也和第16组（**beng**和**chong**同韵）在一个CLUSTER，但第6组和第16组并不同韵。
 
-在```GET /match```接口中，若cluster_type为```CUSTOMIZE```，用户可按如上格式自定义集群。（无需```[CLUSTER-xxx]```，只需第二行）。
+在```GET /match```接口中，若cluster_type为```CUSTOMIZE```，用户可按如上格式自定义集群（无需```[CLUSTER-xxx]```，只需第二行），并把值通过```cluster```参数传入。

@@ -4,10 +4,16 @@ $(document).ready(function () {
     let translate = "零单二三四五六七八九十";
 
     $('button').on('click', function () {
-        let input = $('input').val();
+        let input = $('#kw').val(),
+            min_max_match = $('#min_max_match').val(),
+            phrase_len = $('#phrase_len').val();
         if (!input)
             input = "xie4 chun1 hua1";
-        let url = `/match?phrase=${input}&min_max_match=0&phrase_len=0&cluster=NORMAL&cluster_type=DEFAULT`;
+        if (!min_max_match || min_max_match < 0)
+            min_max_match = 0;
+        if (!phrase_len || phrase_len < 0)
+            phrase_len = 0;
+        let url = `/match?phrase=${input}&min_max_match=${min_max_match}&phrase_len=${phrase_len}&cluster=NORMAL&cluster_type=DEFAULT`;
 
         url = encodeURI(url);
         request(url, 'GET', null, function (response) {

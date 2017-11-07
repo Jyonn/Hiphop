@@ -15,10 +15,14 @@
     <div class="container center" id="search">
         <div id="search-box">
             <label for="input">
-                <input type="text" placeholder="xie4 chun1 hua1"/>
+                <input type="text" placeholder="xie4 chun1 hua1" id="kw"/>
             </label>
             <button>搜索</button>
         </div>
+        <label for="input">
+            <input type="number" placeholder="最短押韵" id="min_max_match">
+            <input type="number" placeholder="词语字数" id="phrase_len">
+        </label>
     </div>
 
     <div class="container center" id="result"></div>

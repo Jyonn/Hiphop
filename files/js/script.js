@@ -18,6 +18,7 @@ $(document).ready(function () {
         url = encodeURI(url);
         request(url, 'GET', null, function (response) {
             let data = response.body;
+            results = [];
             for (let item in data) {
                 results[parseInt(item)] = data[item];
             }

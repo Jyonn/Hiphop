@@ -11,7 +11,7 @@ with open(os.path.join(CRT_PATH, 'phrase'), 'wb+') as f:
             s = s[:-1]
         flag = True
         for c in s:
-            if c.upper() in 'ABCDEFGHIJKLMNOPQRSTUVWXYZ':
+            if c.upper() in 'ABCDEFGHIJKLMNOPQRSTUVWXYZ!@#$%^&*()~{}[]`1234567890-=_+?<>,.;:\"\'':
                 flag = False
         if flag:
             f.write((s+'\n').encode())

@@ -66,8 +66,10 @@ class Phrase(models.Model):
         return Ret(o_phrase)
 
     def to_dict(self):
-        tag_list = json.loads(self.tags)
-        pass
+        return dict(
+            tags=self.tags,
+            phrase=self.phrase,
+        )
 
 
 class Tag(models.Model):
@@ -106,12 +108,12 @@ class Tag(models.Model):
         return Ret(o_tag)
 
     @classmethod
-    def get_tag_list(cls):
+    def get_tag_dict(cls):
         tags = cls.objects.all()
-        tag_list = []
+        tag_dict = {}
         for o_tag in tags:
-            tag_list.append(o_tag.to_dict())
-        return tag_list
+            tag_dict[str(o_tag.pk)] = o_tag.tag
+        return tag_dict
 
     @classmethod
     def create(cls, tag):
@@ -138,5 +140,4 @@ class Tag(models.Model):
             tid=self.pk,
             tag=self.tag,
         )
-
 

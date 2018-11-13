@@ -24,11 +24,17 @@ class Ret:
         self.append_msg = append_msg
 
 
-def response(e=Error.OK, msg=Error.OK.msg, body=None):
+def response(e=Error.OK, msg=Error.OK.msg, body=None, allow=False):
     """
     回复HTTP请求
     """
+    if not isinstance(e, E):
+        body = e
+        e = Error.OK
+        msg = Error.OK.msg
+
     resp = {
+        "status": 'debug' if DEBUG else 'release',
         "code": e.eid,
         "msg": msg,
         "body": body or [],
@@ -39,6 +45,11 @@ def response(e=Error.OK, msg=Error.OK.msg, body=None):
         status=200,
         content_type="application/json; encoding=utf-8",
     )
+    if allow and isinstance(body, dict):
+        allow_method_list = []
+        for item in body:
+            allow_method_list.append(item)
+        http_resp['Allow'] = ', '.join(allow_method_list)
     return http_resp
 
 

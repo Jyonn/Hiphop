@@ -34,6 +34,8 @@ class Error:
     ERROR_CREATE_TAG = E("创建标签错误")
     NOT_FOUND_TAG = E("不存在的标签")
 
+    NOT_FOUND_CONFIG = E("不存在的配置")
+
     @classmethod
     def get_error_dict(cls):
         error_dict = dict()

@@ -45,7 +45,7 @@ class Phrase(models.Model):
         return Ret(o_phrase)
 
     @classmethod
-    def create(cls, phrase):
+    def create(cls, phrase, tags):
         ret = cls._validate(locals())
         if ret.error is not Error.OK:
             return ret
@@ -57,7 +57,7 @@ class Phrase(models.Model):
         try:
             o_phrase = cls(
                 phrase=phrase,
-                tags='[]',
+                tags=tags,
             )
             o_phrase.save()
         except Exception as err:

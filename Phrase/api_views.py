@@ -2,8 +2,13 @@ from django.views import View
 
 from Base.decorator import require_get, require_post
 from Base.error import Error
-from Base.response import response
-from Phrase.models import Tag
+from Base.response import response, error_response
+from Config.models import Config
+from Init.fileread import phrases
+from Phrase.models import Tag, Phrase
+
+START = Config.get_config_by_key('start').body
+assert isinstance(START, Config)
 
 
 class TagView(View):
@@ -23,8 +28,26 @@ class TagView(View):
         return response(o_tag.to_dict())
 
 
-# class PhraseView:
-#     @staticmethod
-#     @require_get()
-#     def get(request):
-#
+class PhraseView(View):
+    @staticmethod
+    @require_get()
+    def get(request):
+        start = int(START.value)
+        sub_phrases = phrases[start: start+10]
+        return response(sub_phrases)
+
+    @staticmethod
+    @require_post(['phrase', 'tags'])
+    def post(request):
+        phrase = request.d.phrase
+        tags = request.d.tags
+
+        ret = Phrase.create(phrase, tags)
+        if ret.error is not Error.OK:
+            return error_response(ret)
+
+        start = int(START.value) + 1
+        START.value = str(start)
+        START.save()
+
+        return response()

@@ -49,3 +49,16 @@ class Config(models.Model):
             else:
                 return Ret(default)
         return Ret(o_config.value)
+
+    @classmethod
+    def get_config_by_key(cls, key):
+        ret = cls._validate(locals())
+        if ret.error is not Error.OK:
+            return ret
+
+        try:
+            o_config = cls.objects.get(key=key)
+        except Exception as err:
+            deprint(str(err))
+            return Ret(Error.NOT_FOUND_CONFIG)
+        return Ret(o_config)

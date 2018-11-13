@@ -1,0 +1,119 @@
+{% load staticfiles %}
+<html>
+<head>
+    <meta charset="UTF-8"/>
+    <script src="{% static 'js/info.js' %}"></script>
+    <script src="{% static 'js/base.js' %}"></script>
+</head>
+<style>
+    * {
+        box-sizing: border-box;
+        margin: 0;
+    }
+
+    body {
+        background: linear-gradient(to bottom left, #355C7D, #6C5B7B, #C06C84);
+    }
+
+    .tag-container {
+
+    }
+
+    .tag-container .tag {
+        height: 30px;
+        cursor: pointer;
+        display: inline-block;
+    }
+
+    .tag div {
+        height: 30px;
+        line-height: 30px;
+        padding: 0 10px;
+        display: inline-block;
+        color: white;
+        transition: 0.2s;
+    }
+
+    .tag .num {
+        width: 30px;
+        background: black;
+        border-radius: 7px 0 0 7px;
+    }
+
+    .tag .name {
+        background: gray;
+        border-radius: 0 7px 7px 0;
+    }
+
+    .tag.active div {
+        background: orange;
+    }
+
+    .phrase-container {
+        width: 100%;
+        text-align: center;
+        font-size: 60px;
+    }
+
+</style>
+<body>
+    <div class="phrase-container" id="phrase-container">哈哈哈哈哈</div>
+    <div class="tag-container" id="tag-container">
+        <div class="tag" onclick="toggle_tag(this)"><div class="num">1</div><div class="name">名词</div></div>
+        <div class="tag active"><div class="num">1</div><div class="name">名词</div></div>
+        <div class="tag"><div class="num">1</div><div class="name">名词</div></div>
+    </div>
+    <div class="add-tag-box">
+        <input type="text" maxlength="10" placeholder="标签"/>
+        <div class="btn">新建</div>
+    </div>
+</body>
+<script>
+    let phrases = [],
+        tag_dict = {},
+        selected_tags = [],
+        tag_ele_list = [];
+
+    let tagContainer = document.getElementById('tag-container');
+    let phraseContainer = document.getElementById('phrase-container');
+
+    function show_next_phrase() {
+        let phrase = phrases[0];
+        phrases.shift();
+        phraseContainer.innerText = phrase;
+        if (phrases.length < 3) {
+            load_more();
+        }
+        selected_tags.length = 0;
+        for (let i = 0; i < tag_ele_list.length; i++) {
+            deactivate(tag_ele_list[i]);
+        }
+    }
+
+    function toggle_tag(tag_ele) {
+        toggle(tag_ele);
+    }
+
+    function load_more() {
+        Request.get('/api/phrase')
+            .then((body) => {
+                phrases = phrases.concat(body);
+            })
+    }
+
+    function load_tags() {
+        Request.get('/api/tag')
+            .then((body) =>{
+                tag_dict = body;
+                display_tags();
+            })
+    }
+
+    function display_tags() {
+
+    }
+
+    load_tags();
+    load_more();
+</script>
+</html>

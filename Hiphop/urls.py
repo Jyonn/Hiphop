@@ -13,12 +13,14 @@ Including another URLconf
     1. Import the include() function: from django.conf.urls import url, include
     2. Add a URL to urlpatterns:  url(r'^blog/', include('blog.urls'))
 """
-from django.urls import path
+from django.urls import path, include
 
-from Hiphop.front_views import index
+from Hiphop.front_views import index, tagger
 from Hiphop.views import match_phrase
 
 urlpatterns = [
+    path('api/', include('Phrase.api_urls')),
     path('', index),
+    path('tagger', tagger),
     path('match', match_phrase),
 ]

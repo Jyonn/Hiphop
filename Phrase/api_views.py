@@ -43,7 +43,7 @@ class PhraseView(View):
 
         if tags == 'BACK':
             start.value = str(int(start.value) - 1)
-        if tags == 'DELETE':
+        elif tags == 'DELETE':
             start.value = str(int(start.value) + 1)
         else:
             ret = Phrase.create(phrase, tags)

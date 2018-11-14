@@ -102,14 +102,21 @@
         color: white;
     }
 
+    .op-box #back-btn {
+        top: 130px;
+        background: deepskyblue;
+        color: white;
+    }
+
 </style>
 <body>
     <div class="phrase-container" id="phrase-container"></div>
     <div class="tag-container" id="tag-container"></div>
     <div class="op-box">
         <input type="text" maxlength="10" placeholder="标签" id="tag-input"/>
-        <div class="btn" id="delete-phrase-btn" onclick="update_phrase(true)">删除词语</div>
+        <div class="btn" id="delete-phrase-btn" onclick="update_phrase('DELETE')">删除词语</div>
         <div class="btn" id="next-btn" onclick="update_phrase()">下一个</div>
+        <div class="btn" id="back-btn" onclick="update_phrase('BACK')">上一个</div>
     </div>
 </body>
 <script>
@@ -119,7 +126,7 @@
     let tagContainer = document.getElementById('tag-container');
     let phraseContainer = document.getElementById('phrase-container');
 
-    function update_phrase(del=false) {
+    function update_phrase(action=null) {
         let tags = [];
         for (let i in tag_dict) {
             if (tag_dict.hasOwnProperty(i)) {
@@ -128,7 +135,7 @@
                 }
             }
         }
-        tags = del ? 'DELETE' : tags;
+        tags = action ? action : tags;
         if (!tags.length) {
             return;
         }
@@ -220,9 +227,11 @@
     document.addEventListener('keydown', function ($event) {
         let k = $event.keyCode;
         if (k === 8) {
-            update_phrase(true);
+            update_phrase('DELETE');
         } else if (k === 39) {
             update_phrase();
+        } else if (k === 37) {
+            update_phrase('BACK')
         }
     })
 </script>

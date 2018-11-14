@@ -7,9 +7,6 @@ from Config.models import Config
 from Init.fileread import phrases
 from Phrase.models import Tag, Phrase
 
-START = Config.get_config_by_key('start').body
-assert isinstance(START, Config)
-
 
 class TagView(View):
     @staticmethod
@@ -31,7 +28,7 @@ class PhraseView(View):
     @staticmethod
     @require_get()
     def get(request):
-        start = int(START.value)
+        start = int(Config.get_config_by_key('start').body.value)
         phrase = phrases[start]
         return response(phrase)
 
@@ -47,8 +44,8 @@ class PhraseView(View):
             if ret.error is not Error.OK:
                 return error_response(ret)
 
-        start = int(START.value) + 1
-        START.value = str(start)
-        START.save()
+        start = Config.get_config_by_key('start').body
+        start.value = str(int(start.value) + 1)
+        start.save()
 
         return response()

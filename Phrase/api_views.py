@@ -39,13 +39,18 @@ class PhraseView(View):
         tags = request.d.tags
         tags = str(tags)
 
-        if tags != 'DELETE':
+        start = Config.get_config_by_key('start').body
+
+        if tags == 'BACK':
+            start.value = str(int(start.value) - 1)
+        if tags == 'DELETE':
+            start.value = str(int(start.value) + 1)
+        else:
             ret = Phrase.create(phrase, tags)
             if ret.error is not Error.OK:
                 return error_response(ret)
+            start.value = str(int(start.value) + 1)
 
-        start = Config.get_config_by_key('start').body
-        start.value = str(int(start.value) + 1)
         start.save()
 
         return response()

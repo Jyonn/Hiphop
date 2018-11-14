@@ -32,8 +32,8 @@ class PhraseView(View):
     @require_get()
     def get(request):
         start = int(START.value)
-        sub_phrases = phrases[start: start+10]
-        return response(sub_phrases)
+        phrase = phrases[start]
+        return response(phrase)
 
     @staticmethod
     @require_post(['phrase', 'tags'])

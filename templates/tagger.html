@@ -96,14 +96,10 @@
         color: white;
     }
 
-    .op-box #next-btn, #start-btn {
+    .op-box #next-btn {
         top: 90px;
         background: deepskyblue;
         color: white;
-    }
-
-    .op-box .btn.inactive {
-        display: none;
     }
 
 </style>
@@ -113,31 +109,17 @@
     <div class="op-box">
         <input type="text" maxlength="10" placeholder="标签" id="tag-input"/>
         <div class="btn" id="delete-phrase-btn" onclick="update_phrase(true)">删除词语</div>
-        <div class="btn inactive" id="next-btn" onclick="update_phrase()">下一个</div>
-        <div class="btn active" id="start-btn" onclick="start()">开始</div>
+        <div class="btn" id="next-btn" onclick="update_phrase()">下一个</div>
     </div>
 </body>
 <script>
-    let phrases = [],
+    let current_phrase = [],
         tag_dict = {};
 
     let tagContainer = document.getElementById('tag-container');
     let phraseContainer = document.getElementById('phrase-container');
 
-    let is_start = false;
-    let nextBtn = document.getElementById('next-btn'),
-        startBtn = document.getElementById('start-btn');
-
-    function start() {
-        deactivate(startBtn);
-        activate(nextBtn);
-        is_start = true;
-        show_next_phrase();
-    }
-
     function update_phrase(del=false) {
-        if (!is_start)
-            return;
         let tags = [];
         for (let i in tag_dict) {
             if (tag_dict.hasOwnProperty(i)) {
@@ -153,30 +135,24 @@
         let phrase = phraseContainer.innerText;
         Request.post('/api/phrase', {phrase: phrase, tags: tags})
             .then(() => {
-                show_next_phrase();
+                load_next()
             });
     }
 
-    function show_next_phrase() {
-        let phrase = phrases[0];
-        phrases.shift();
-        phraseContainer.innerText = phrase;
-        if (phrases.length < 3) {
-            load_more();
-        }
-        for (let i in tag_dict) {
-            if (tag_dict.hasOwnProperty(i)) {
-                deactivate(tag_dict[i].ele);
-            }
-        }
-    }
-
-    function load_more() {
+    function load_next() {
         Request.get('/api/phrase')
             .then((body) => {
-                phrases = phrases.concat(body);
+                current_phrase = body;
+                phraseContainer.innerText = current_phrase;
+                for (let i in tag_dict) {
+                    if (tag_dict.hasOwnProperty(i)) {
+                        deactivate(tag_dict[i].ele);
+                    }
+                }
             })
     }
+
+    load_next();
 
     function load_tags() {
         Request.get('/api/tag')
@@ -229,7 +205,7 @@
     }
 
     load_tags();
-    load_more();
+    load_next();
 
     document.addEventListener('keydown', function ($event) {
         let k = $event.keyCode;

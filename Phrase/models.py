@@ -112,7 +112,7 @@ class Tag(models.Model):
         tags = cls.objects.all()
         tag_dict = {}
         for o_tag in tags:
-            tag_dict[str(o_tag.pk)] = o_tag.tag
+            tag_dict[str(o_tag.pk)] = dict(tag=o_tag.tag)
         return tag_dict
 
     @classmethod
@@ -129,6 +129,7 @@ class Tag(models.Model):
             o_tag = cls(
                 tag=tag,
             )
+            o_tag.save()
         except Exception as err:
             deprint(str(err))
             return Ret(Error.ERROR_CREATE_TAG)

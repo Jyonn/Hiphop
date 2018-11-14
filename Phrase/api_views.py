@@ -24,8 +24,7 @@ class TagView(View):
         ret = Tag.create(tag)
         if ret.error is not Error.OK:
             return ret
-        o_tag = ret.body
-        return response(o_tag.to_dict())
+        return response(Tag.get_tag_dict())
 
 
 class PhraseView(View):
@@ -41,10 +40,12 @@ class PhraseView(View):
     def post(request):
         phrase = request.d.phrase
         tags = request.d.tags
+        tags = str(tags)
 
-        ret = Phrase.create(phrase, tags)
-        if ret.error is not Error.OK:
-            return error_response(ret)
+        if tags != 'DELETE':
+            ret = Phrase.create(phrase, tags)
+            if ret.error is not Error.OK:
+                return error_response(ret)
 
         start = int(START.value) + 1
         START.value = str(start)

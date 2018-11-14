@@ -1,6 +1,10 @@
 let active = 'active';
 let inactive = 'inactive';
 
+function is_active(ele) {
+    return ele.classList.contains(active);
+}
+
 function activate(ele) {
     ele.classList.add(active);
     ele.classList.remove(inactive);
@@ -128,9 +132,3 @@ function stringToHtml(s) {
 
 Method.staticConstructor();
 Request.staticConstructor();
-
-document.addEventListener('keydown', function ($event) {
-    if ($event.keyCode === 9) {
-        return $event.preventDefault();
-    }
-});

@@ -2,8 +2,8 @@
 <html>
 <head>
     <meta charset="UTF-8"/>
-    <script src="{% static 'js/info.js' %}"></script>
     <script src="{% static 'js/base.js' %}"></script>
+    <script src="{% static 'js/info.js' %}"></script>
 </head>
 <style>
     * {
@@ -16,13 +16,16 @@
     }
 
     .tag-container {
-
+        width: 100%;
+        padding: 0 20%;
+        text-align: center;
     }
 
     .tag-container .tag {
         height: 30px;
         cursor: pointer;
         display: inline-block;
+        margin: 10px;
     }
 
     .tag div {
@@ -55,27 +58,87 @@
         font-size: 60px;
     }
 
+    .op-box {
+        position: absolute;
+        right: 10px;
+        top: 0;
+    }
+
+    .op-box input {
+        position: absolute;
+        top: 10px;
+        right: 0;
+        background: none;
+        height: 30px;
+        outline: none;
+        border: 1px solid rgba(255, 255, 255, 0.6);
+        border-radius: 7px;
+        padding: 0 7px;
+        width: 150px;
+    }
+
+    .op-box .btn {
+        position: absolute;
+        right: 0;
+        width: 150px;
+        height: 30px;
+        line-height: 30px;
+        border: 1px solid rgba(255, 255, 255, 0.6);
+        border-radius: 7px;
+        padding: 0 7px;
+        text-align: center;
+        cursor: pointer;
+    }
+
+    .op-box #delete-phrase-btn {
+        top: 50px;
+        background: indianred;
+        color: white;
+    }
+
+    .op-box #next-btn {
+        top: 90px;
+        background: deepskyblue;
+        color: white;
+    }
+
 </style>
 <body>
-    <div class="phrase-container" id="phrase-container">哈哈哈哈哈</div>
-    <div class="tag-container" id="tag-container">
-        <div class="tag" onclick="toggle_tag(this)"><div class="num">1</div><div class="name">名词</div></div>
-        <div class="tag active"><div class="num">1</div><div class="name">名词</div></div>
-        <div class="tag"><div class="num">1</div><div class="name">名词</div></div>
-    </div>
-    <div class="add-tag-box">
-        <input type="text" maxlength="10" placeholder="标签"/>
-        <div class="btn">新建</div>
+    <div class="phrase-container" id="phrase-container">狼心狗肺</div>
+    <div class="tag-container" id="tag-container"></div>
+    <div class="op-box">
+        <input type="text" maxlength="10" placeholder="标签" id="tag-input"/>
+        <div class="btn" id="delete-phrase-btn" onclick="update_phrase(true)">删除词语</div>
+        <div class="btn" id="next-btn" onclick="update_phrase()">下一个</div>
     </div>
 </body>
 <script>
     let phrases = [],
-        tag_dict = {},
-        selected_tags = [],
-        tag_ele_list = [];
+        tag_dict = {};
 
     let tagContainer = document.getElementById('tag-container');
     let phraseContainer = document.getElementById('phrase-container');
+
+
+    function update_phrase(del=false) {
+        let tags = [];
+        for (let i in tag_dict) {
+            if (tag_dict.hasOwnProperty(i)) {
+                if (is_active(tag_dict[i].ele)) {
+                    tags.push(parseInt(i));
+                }
+            }
+        }
+        tags = del ? 'DELETE' : tags;
+        if (!tags.length) {
+            return;
+        }
+        let phrase = phraseContainer.innerText;
+        Request.post('/api/phrase', {phrase: phrase, tags: tags})
+            .then(() => {
+                show_next_phrase();
+            });
+    }
 
     function show_next_phrase() {
         let phrase = phrases[0];
@@ -84,14 +147,11 @@
         if (phrases.length < 3) {
             load_more();
         }
-        selected_tags.length = 0;
-        for (let i = 0; i < tag_ele_list.length; i++) {
-            deactivate(tag_ele_list[i]);
+        for (let i in tag_dict) {
+            if (tag_dict.hasOwnProperty(i)) {
+                deactivate(tag_dict[i].ele);
+            }
         }
-    }
-
-    function toggle_tag(tag_ele) {
-        toggle(tag_ele);
     }
 
     function load_more() {
@@ -109,11 +169,70 @@
             })
     }
 
-    function display_tags() {
+    let tagInput = document.getElementById('tag-input');
+    let tagTemplate = template`
+        <div class="tag" onclick="toggle(this)">
+            <div class="num">${0}</div><div class="name">${1}</div>
+        </div>
+    `;
 
+    tagInput.addEventListener('keydown', function ($event) {
+        $event.stopPropagation();
+        let k = $event.keyCode;
+        if (k === 13) {
+            let tag = tagInput.value;
+            tagInput.value = '';
+            if (tag) {
+                Request.post('/api/tag', {tag: tag})
+                    .then((body) => {
+                        tag_dict = body;
+                        display_tags();
+                    })
+            }
+        }
+    });
+    
+    function removeAllChild(ele) {
+        while (ele.hasChildNodes()) {
+            ele.removeChild(ele.firstChild);
+        }
+    }
+
+    function display_tags() {
+        removeAllChild(tagContainer);
+        for (let tid in tag_dict) {
+            if (tag_dict.hasOwnProperty(tid)) {
+                let html = stringToHtml(
+                    tagTemplate(String.fromCharCode(parseInt(tid) + 'A'.charCodeAt(0) - 1), tag_dict[tid].tag)
+                );
+                tag_dict[tid].ele = html;
+                tagContainer.appendChild(html);
+            }
+        }
     }
 
     load_tags();
     load_more();
+
+    document.addEventListener('keydown', function ($event) {
+        let k = $event.keyCode;
+        let c = String.fromCharCode(k);
+        if (c >= 'a' && c <= 'z')
+            c = c.toUpperCase();
+        if (c >= 'A' && c <= 'Z') {
+            let tid = k - 'A'.charCodeAt(0) + 1;
+            tid = '' + tid;
+            toggle(tag_dict[tid].ele);
+        }
+    });
+
+    document.addEventListener('keydown', function ($event) {
+        let k = $event.keyCode;
+        if (k === 8) {
+            update_phrase(true);
+        } else if (k === 39) {
+            update_phrase();
+        }
+    })
 </script>
 </html>

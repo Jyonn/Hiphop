@@ -99,3 +99,4 @@ class PhraseP:
 
 class TagP:
     tag, = Tag.get_params('tag')
+    tag.process(str, begin=True)

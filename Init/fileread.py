@@ -90,14 +90,15 @@ class Worker:
                 cluster_free = True
                 self.clusters[cluster_name] = self.get_cluster(s)
 
-    def match(self, refined_phrase, cluster, min_max_match, phrase_len, cluster_type):
+    def match(self, phonetics, cluster, min_max_match, phrase_len, cluster_type):
         """
         词语匹配
         :param cluster_type: cluster类型
         :param phrase_len: 匹配的词语长度 0 表示所有长度
         :param min_max_match: 最小匹配的最大长度 -1 表示所能达到的最大长度
-        :param refined_phrase: 拼音列表 如羽毛球 则 qiu2 mao2 yu3
+        :param phonetics: 拼音列表 如羽毛球 则 qiu2 mao2 yu3
         :param cluster: 使用聚类名称 默认为 NORMAL 还有
+        :return: Ret类 如果成功则返回匹配词典
         """
         if cluster_type == 'DEFAULT':
             if cluster in self.clusters.keys():
@@ -108,12 +109,12 @@ class Worker:
             cluster = self.get_cluster(cluster)
 
         result = dict()
-        for phonetic in refined_phrase:
+        for phonetic in phonetics:
             if phonetic['p'] not in self.groups.keys():
-                raise WorkerError.NOT_FOUND_PHONETIC(phonetic['p'])
+                raise WorkerError.NOT_FOUND_PHONETIC
 
-        if min_max_match > len(refined_phrase):
-            min_max_match = len(refined_phrase)
+        if min_max_match > len(phonetics):
+            min_max_match = len(phonetics)
 
         for _phrase in self.phrases:  # 遍历所有的词语进行匹配
             phrase = _phrase[::-1]  # 词语反转
@@ -124,15 +125,15 @@ class Worker:
             if min_max_match > len(phrase):
                 continue
 
-            for i in range(min(len(phrase), len(refined_phrase))):  # 开始匹配
+            for i in range(min(len(phrase), len(phonetics))):  # 开始匹配
                 word = phrase[i]  # 匹配第i个字
                 if word not in self.words:  # 不存在这个字
                     break
                 single_match = False
                 for phonetic in self.words[word]:  # 遍历这个字的所有拼音
-                    if refined_phrase[i]['t'] != '' and refined_phrase[i]['t'] != phonetic['t']:
+                    if phonetics[i]['t'] != '' and phonetics[i]['t'] != phonetic['t']:
                         continue
-                    g1 = self.groups[refined_phrase[i]['p']]  # 获取拼音所在组
+                    g1 = self.groups[phonetics[i]['p']]  # 获取拼音所在组
                     # print(phonetic)
                     if phonetic['p'] not in self.groups.keys():
                         continue

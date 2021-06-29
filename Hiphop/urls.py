@@ -15,12 +15,12 @@ Including another URLconf
 """
 from django.urls import path, include
 
-from Hiphop.front_views import index, tagger
-from Hiphop.views import match_phrase
+from Hiphop import front_views
+from Hiphop import api_views
 
 urlpatterns = [
     path('api/', include('Phrase.api_urls')),
-    path('', index),
-    path('tagger', tagger),
-    path('match', match_phrase),
+    path('', front_views.index),
+    path('tagger', front_views.tagger),
+    path('match', api_views.MatchView.as_view()),
 ]

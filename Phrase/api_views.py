@@ -1,42 +1,38 @@
+from SmartDjango import Analyse
 from django.views import View
 
 from Base.decorator import require_get, require_post
 from Base.error import Error
 from Base.response import response, error_response
 from Config.models import Config
-from Init.fileread import phrases
-from Phrase.models import Tag, Phrase
+from Init.fileread import worker
+from Phrase.models import Tag, Phrase, TagP, PhraseP
 
 
 class TagView(View):
     @staticmethod
-    @require_get()
-    def get(request):
-        return response(Tag.get_tag_dict())
+    def get(_):
+        return Tag.get_tag_dict()
 
     @staticmethod
-    @require_post(['tag'])
-    def post(request):
-        tag = request.d.tag
-        ret = Tag.create(tag)
-        if ret.error is not Error.OK:
-            return ret
-        return response(Tag.get_tag_dict())
+    @Analyse.r(b=[TagP.tag])
+    def post(r):
+        return Tag.create(r.d.tag).get_tag_dict()
 
 
 class PhraseView(View):
     @staticmethod
     @require_get()
-    def get(request):
-        start = int(Config.get_config_by_key('start').body.value)
-        phrase = phrases[start]
-        return response(phrase)
+    def get(_):
+        start = int(Config.get_value_by_key('start'))
+        phrase = worker.phrases[start]
+        return phrase
 
     @staticmethod
-    @require_post(['phrase', 'tags'])
-    def post(request):
-        phrase = request.d.phrase
-        tags = request.d.tags
+    @require_post([PhraseP.phrase, TagP.tag])
+    def post(r):
+        phrase = r.d.phrase
+        tags = r.d.tags
         tags = str(tags)
 
         start = Config.get_config_by_key('start').body

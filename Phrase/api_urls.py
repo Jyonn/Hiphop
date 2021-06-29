@@ -1,8 +1,8 @@
 from django.urls import path
 
-from Phrase.api_views import TagView, PhraseView
+from Phrase import api_views
 
 urlpatterns = [
-    path('tag', TagView.as_view()),
-    path('phrase', PhraseView.as_view()),
+    path('tag', api_views.TagView.as_view()),
+    path('phrase', api_views.PhraseView.as_view()),
 ]

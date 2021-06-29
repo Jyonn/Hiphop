@@ -98,4 +98,4 @@ class PhraseP:
 
 
 class TagP:
-    tag, = Phrase.get_params('tag')
+    tag, = Tag.get_params('tag')

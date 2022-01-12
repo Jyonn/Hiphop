@@ -84,15 +84,15 @@ div.button-container {
 }
 
 div.button-container div.button {
-    width: 30%;
-    height: 44px;
+    width: 15%;
+    height: 36px;
     border-radius: 5px;
     background: lightslategrey;
     display: flex;
     flex-direction: row;
     align-items: center;
     justify-content: center;
-    font-size: 18px;
+    font-size: 14px;
     color: #eee;
     margin: 0 44px;
     cursor: pointer;

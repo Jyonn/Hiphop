@@ -4,36 +4,46 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
-    <title>冰山押韵 - 国内首款支持二压以上的嘻哈押韵工具</title>
+    <title>冰山押韵 - 国内首款支持二押以上的嘻哈押韵工具</title>
     <link rel="stylesheet" href="{% static "css/style.css" %}">
 </head>
 <body>
-    <div class="container center" id="title">
-        <h1>冰山押韵</h1>
-        <h2>首款支持二压以上的押韵工具</h2>
+    <div class="nav">
+        <span class="title">冰山押韵</span>
+        <span class="subtitle">首款支持双押以上的押韵工具</span>
     </div>
-    <div class="container center" id="search">
-        <div id="search-box">
-            <label for="input">
-                <input type="text" placeholder="xie4 chun1 hua1" id="kw"/>
-            </label>
-            <button>搜索</button>
+
+    <div class="search-container">
+        <input type="text" placeholder="xie4 chun1 hua1" id="kw"/>
+        <div class="box">
+            <select id="min_max_match"></select>
+            <span>押</span>
         </div>
-        <label for="input">
-            <input type="number" placeholder="最短押韵" id="min_max_match">
-            <input type="number" placeholder="词语字数" id="phrase_len">
-        </label>
+        <div class="box">
+            <select id="phrase_len"></select>
+            <span>长</span>
+        </div>
     </div>
 
-    <div class="container center" id="result"></div>
+    <div class="button-container">
+        <div class="button" id="search">押它</div>
+    </div>
 
-    <script src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
-    <script src="{% static "js/request.js" %}"></script>
-    <script src="{% static "js/script.js" %}"></script>
-    <script type="text/javascript" src="https://cdn.webfont.youziku.com/wwwroot/js/wf/youziku.api.min.js"></script>
-    <script type="text/javascript">
-       $youziku.load("h1,h2,button", "f0fa87f4a6ad479dbc181d0bb6fc53bb", "TSSunOld");
-       $youziku.draw();
+    <div class="result-container" id="result"></div>
+
+    <script src="{% static "js/v2/common.js" %}"></script>
+    <script src="{% static "js/v2/request.js" %}"></script>
+    <script src="{% static "js/v2/main.js" %}"></script>
+    <script>
+        new MainComponent()
     </script>
+{#    <script src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>#}
+{#    <script src="{% static "js/request.js" %}"></script>#}
+{#    <script src="{% static "js/script.js" %}"></script>#}
+{#    <script type="text/javascript" src="https://cdn.webfont.youziku.com/wwwroot/js/wf/youziku.api.min.js"></script>#}
+{#    <script type="text/javascript">#}
+{#       $youziku.load("h1,h2,button", "f0fa87f4a6ad479dbc181d0bb6fc53bb", "TSSunOld");#}
+{#       $youziku.draw();#}
+{#    </script>#}
 </body>
 </html>

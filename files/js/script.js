@@ -22,7 +22,6 @@ $(document).ready(function () {
             for (let item in data) {
                 results[parseInt(item)] = data[item];
             }
-            console.log(results);
             result_container.empty();
             for (let i = 10; i > 0; i--) {
                 if (!results[i])

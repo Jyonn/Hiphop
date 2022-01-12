@@ -1,47 +1,121 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "lucida grande", "lucida sans unicode", lucida, helvetica, "Hiragino Sans GB", "Microsoft YaHei", "WenQuanYi Micro Hei", sans-serif;
+}
+
+input, textarea, div, select {
+  outline: none;
+  border: none;
+  background: none;
+  resize: none;
+}
+
+select {
+    text-align: right;
+}
+
 body {
-    background: #8ccef5;
+    background: #eee;
 }
 
-h1 {
-    color: #ffffff;
-    font-size: 44px;
-    letter-spacing: 10px;
+div.nav {
+    width: 100%;
+    height: 70px;
+    background: #333;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
 }
 
-h2 {
-    color: #ffffff;
+div.nav span.title {
+    color: #eee;
+    font-size: 22px;
+    font-weight: bold;
+    letter-spacing: 2px;
+    margin-left: 20px;
+}
+
+div.nav span.subtitle {
+    color: #bbb;
     font-size: 14px;
     letter-spacing: 2px;
+    margin-left: 20px;
 }
 
-.container {
+div.search-container {
     width: 100%;
+    height: 44px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-start;
+    background: #777;
 }
 
-#title {
-    margin-top: 100px;
-}
-
-.center {
-    text-align: center;
-}
-
-input {
-    width: 60%;
-    font-size: 18px;
-    padding: 5px;
-}
-
-button {
-    height: 35px;
+div.search-container input {
+    font-size: 14px;
     padding: 0 20px;
+    color: #ddd;
+    width: 50%;
 }
 
-#search {
-    margin-top: 40px;
+div.search-container input::placeholder {
+    color: #bbb;
 }
 
-.result-box {
-    padding: 0 20%;
-    text-align: justify;
+div.search-container span {
+    font-size: 14px;
+}
+
+div.search-container div.box {
+    width: 25%;
+}
+
+div.button-container {
+    margin-top: 60px;
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-end;
+}
+
+div.button-container div.button {
+    width: 30%;
+    height: 44px;
+    border-radius: 5px;
+    background: lightslategrey;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    color: #eee;
+    margin: 0 44px;
+    cursor: pointer;
+}
+
+div.result-container {
+    margin-top: 100px;
+    padding: 0 44px;
+}
+
+div.result-container div.match-title {
+    font-size: 16px;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+div.result-container div.match-result {
+    font-size: 15px;
+    margin-bottom: 30px;
+    line-height: 30px;
+}
+
+div.result-container div.match-result div {
+    margin-right: 15px;
+    display: inline-block;
 }

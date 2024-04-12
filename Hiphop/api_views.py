@@ -1,5 +1,6 @@
 from SmartDjango import Analyse
 from django.views import View
+from oba import Obj
 from smartify import P, Processor
 
 from Init.fileread import worker
@@ -37,4 +38,4 @@ class MatchView(View):
         P('cluster_type').process(cluster_type_processor),
     ])
     def get(r):
-        return worker.match(**r.d.dict())
+        return worker.match(**Obj.raw(r.d))

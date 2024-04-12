@@ -1,4 +1,6 @@
-django>=2.0
-mysqlclient==1.3.12
-SmartDjango>=3.6.8
-smartify>=0.0.2
+django
+pymysql
+gunicorn
+pyjwt
+requests
+smartdjango

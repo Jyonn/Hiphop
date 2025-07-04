@@ -52,7 +52,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'SmartDjango.middleware.HttpPackMiddleware',
+    'smartdjango.middleware.APIPacker',
 ]
 
 ROOT_URLCONF = 'Hiphop.urls'

@@ -78,10 +78,5 @@ class Tag(models.Model, Dictify):
 
         return tag
 
-    def d(self):
+    def json(self):
         return self.dictify('pk->tid', 'tag')
-
-
-class TagP:
-    tag, = Tag.get_params('tag')
-    tag.process(str, begin=True)

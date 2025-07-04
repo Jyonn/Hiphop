@@ -3,14 +3,14 @@ import re
 import os
 import codecs
 
-from SmartDjango import E, Hc
+from smartdjango import Error, Code
 
 from Hiphop.settings import BASE_DIR
 
 
-@E.register(id_processor=E.idp_cls_prefix())
-class WorkerError:
-    NOT_FOUND_PHONETIC = E('不是合法的拼音', hc=Hc.NotFound)
+@Error.register
+class WorkerErrors:
+    NOT_FOUND_PHONETIC = Error('不是合法的拼音', code=Code.NotFound)
 
 
 class Worker:
@@ -111,7 +111,7 @@ class Worker:
         result = dict()
         for phonetic in phonetics:
             if phonetic['p'] not in self.groups.keys():
-                raise WorkerError.NOT_FOUND_PHONETIC
+                raise WorkerErrors.NOT_FOUND_PHONETIC
 
         if min_max_match > len(phonetics):
             min_max_match = len(phonetics)

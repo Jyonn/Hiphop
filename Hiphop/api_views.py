@@ -1,7 +1,5 @@
-from SmartDjango import Analyse
 from django.views import View
-from oba import Obj
-from smartify import P, Processor
+from smartdjango import analyse, Validator
 
 from Init.fileread import worker
 
@@ -29,13 +27,12 @@ def cluster_type_processor(cluster_type):
 
 
 class MatchView(View):
-    @staticmethod
-    @Analyse.r(q=[
-        P('phrase').process(Processor(phrase_processor, yield_name='phonetics')),
-        P('phrase_len').default(0).process(int),
-        P('min_max_match').default(0).process(int),
-        P('cluster').process(lambda x: x.upper()),
-        P('cluster_type').process(cluster_type_processor),
-    ])
-    def get(r):
-        return worker.match(**Obj.raw(r.d))
+    @analyse.query(
+        Validator('phrase', final_name='phonetics').to(phrase_processor),
+        Validator('phrase_len').default(0).to(int),
+        Validator('min_max_match').default(0).to(int),
+        Validator('cluster').to(lambda x: x.upper()),
+        Validator('cluster_type').to(cluster_type_processor),
+    )
+    def get(self, requests):
+        return worker.match(requests.query())

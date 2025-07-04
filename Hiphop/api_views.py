@@ -35,4 +35,4 @@ class MatchView(View):
         Validator('cluster_type').to(cluster_type_processor),
     )
     def get(self, requests):
-        return worker.match(requests.query())
+        return worker.match(**requests.query())

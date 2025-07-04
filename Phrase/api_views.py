@@ -1,42 +1,39 @@
-from SmartDjango import Analyse
 from django.views import View
+from smartdjango import analyse
 
 from Config.models import Config
 from Init.fileread import worker
-from Phrase.models import Tag, Phrase, TagP, PhraseP
+from Phrase.models import Tag, Phrase
+from Phrase.params import TagParams, PhraseParams
 
 
 class TagView(View):
-    @staticmethod
-    def get(_):
+    def get(self, request):
         return Tag.get_tag_dict()
 
-    @staticmethod
-    @Analyse.r(b=[TagP.tag])
-    def post(r):
-        return Tag.create(r.d.tag).get_tag_dict()
+    @analyse.body(TagParams.tag)
+    def post(self, request):
+        return Tag.create(request.body.tag).get_tag_dict()
 
 
 class PhraseView(View):
-    @staticmethod
-    def get(_):
+    def get(self, request):
         start = int(Config.get_value_by_key('start'))
         phrase = worker.phrases[start]
         return phrase
 
-    @staticmethod
-    @Analyse.r(b=[PhraseP.phrase, TagP.tag])
-    def post(r):
-        tags = r.d.tags
+    @analyse.body(PhraseParams.phrase, TagParams.tag)
+    def post(self, request):
+        tags = request.body.tags
 
-        start = Config.get_config_by_key('start').body
+        start = Config.get_config_by_key('start')
 
         if tags == 'BACK':
             start.value = str(int(start.value) - 1)
         elif tags == 'DELETE':
             start.value = str(int(start.value) + 1)
         else:
-            Phrase.create(**r.d.dict())
+            Phrase.create(**request.body())
             start.value = str(int(start.value) + 1)
 
         start.save()

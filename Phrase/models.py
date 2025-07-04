@@ -1,19 +1,10 @@
-from SmartDjango import models, E, Hc
+from diq import Dictify
+from django.db import models
+
+from Phrase.validators import PhraseErrors, TagErrors
 
 
-@E.register(id_processor=E.idp_cls_prefix())
-class PhraseError:
-    NOT_FOUND = E("不存在的词语", hc=Hc.NotFound)
-    CREATE = E("创建词语错误", hc=Hc.BadRequest)
-
-
-@E.register(id_processor=E.idp_cls_prefix())
-class TagError:
-    NOT_FOUND = E("不存在的标签", hc=Hc.NotFound)
-    CREATE = E("创建标签错误", hc=Hc.BadRequest)
-
-
-class Phrase(models.Model):
+class Phrase(models.Model, Dictify):
     phrase = models.CharField(
         max_length=20,
         unique=True,
@@ -29,7 +20,7 @@ class Phrase(models.Model):
         try:
             return cls.objects.get(phrase=phrase)
         except cls.DoesNotExist as err:
-            raise PhraseError.NOT_FOUND(debug_message=err)
+            raise PhraseErrors.NOT_FOUND(debug_message=err)
 
     @classmethod
     def create(cls, phrase, tags):
@@ -42,14 +33,14 @@ class Phrase(models.Model):
             )
             phrase.save()
         except Exception as err:
-            raise PhraseError.CREATE(debug_message=err)
+            raise PhraseErrors.CREATE(debug_message=err)
         return phrase
 
-    def d(self):
+    def json(self):
         return self.dictify('tags', 'phrase')
 
 
-class Tag(models.Model):
+class Tag(models.Model, Dictify):
     tag = models.CharField(
         max_length=10,
         unique=True,
@@ -60,14 +51,14 @@ class Tag(models.Model):
         try:
             return cls.objects.get(pk=tag_id)
         except cls.DoesNotExist as err:
-            raise TagError.NOT_FOUND(debug_message=err)
+            raise TagErrors.NOT_FOUND(details=err)
 
     @classmethod
     def get_by_tag(cls, tag):
         try:
             return cls.objects.get(tag=tag)
         except cls.DoesNotExist as err:
-            raise TagError.NOT_FOUND(debug_message=err)
+            raise TagErrors.NOT_FOUND(details=err)
 
     @classmethod
     def get_tag_dict(cls):
@@ -80,21 +71,15 @@ class Tag(models.Model):
     @classmethod
     def create(cls, tag):
         try:
-            tag = cls(
-                tag=tag,
-            )
+            tag = cls(tag=tag)
             tag.save()
         except Exception as err:
-            raise TagError.CREATE(debug_message=err)
+            raise TagErrors.CREATE(details=err)
 
         return tag
 
     def d(self):
         return self.dictify('pk->tid', 'tag')
-
-
-class PhraseP:
-    phrase, tags = Phrase.get_params('phrase', 'tags')
 
 
 class TagP:

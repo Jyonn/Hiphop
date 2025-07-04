@@ -50,7 +50,7 @@ class Request {
             });
         }
         return req.json().then((resp) => {
-            if (resp.code !== 0) {
+            if (resp.identifier !== 'OK') {
                 if (!this._handler || this._handler(resp)) {
                     alert(resp.msg);
                 }
